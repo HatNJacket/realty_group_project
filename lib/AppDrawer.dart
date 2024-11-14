@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:realty_group_project/main.dart';
 import 'ListingsPage.dart';
 
+// ignore_for_file: file_names
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
 
