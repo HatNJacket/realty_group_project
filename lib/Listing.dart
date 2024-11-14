@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'PlaceBid.dart';
 
+// ignore_for_file: file_names
 class Listing {
-  final String title;
-  final String description;
+  final String address;
+  final String numBeds;
+  final String numBaths;
+  final String squareFeet;
   final String imageURL;
   final double price;
   final String moreInfo;
 
   Listing({
-    required this.title,
-    required this.description,
+    required this.address,
+    required this.numBeds,
+    required this.numBaths,
+    required this.squareFeet,
     required this.imageURL,
     required this.price,
     required this.moreInfo,
@@ -19,13 +25,13 @@ class Listing {
 class ListingWidget extends StatefulWidget{
   final Listing listing;
 
-  ListingWidget({required this.listing});
+  const ListingWidget({super.key, required this.listing});
 
   @override
-  _ListingWidgetState createState() => _ListingWidgetState();
+  ListingWidgetState createState() => ListingWidgetState();
 }
 
-class _ListingWidgetState extends State<ListingWidget>{
+class ListingWidgetState extends State<ListingWidget>{
   bool _tapped = false;
 
   void _toggleMoreInfo() {
@@ -34,45 +40,84 @@ class _ListingWidgetState extends State<ListingWidget>{
     });
   }
 
+  void _placeBid() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PlaceBid(listing: widget),
+      ),
+    );
+    print("Placing Bid");
+  }
+
+  void _scheduleViewing() {
+    print("Scheduling Viewing");
+  }
+
   @override
   Widget build(BuildContext context){
     return Card(
-      margin: EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(widget.listing.imageURL),
+          Center(child: Image.network(widget.listing.imageURL)),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              widget.listing.title,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                widget.listing.address,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              widget.listing.description,
-              style: TextStyle(fontSize: 16),
-            ), 
+              "${widget.listing.numBeds} beds, ${widget.listing.numBaths} baths, ${widget.listing.squareFeet} sqft, ",
+              style: const TextStyle(fontSize: 16),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               '\$${widget.listing.price.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 18, color: Colors.green),
+              style: const TextStyle(fontSize: 18, color: Colors.green),
             ) 
           ),
           if(_tapped)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:Text(
-              widget.listing.moreInfo,
-              style: TextStyle(fontSize: 16),
+          Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 200.0,
+                  child: TextButton(
+                      onPressed: _placeBid,
+                      style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.grey.shade300)),
+                      child: const Text(
+                          "Place Bid",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      )
+                  ),
+                ),
+                SizedBox(
+                  width: 200.0,
+                  child: TextButton(
+                      onPressed: _scheduleViewing,
+                      style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.grey.shade300)),
+                      child: const Text(
+                          "Schedule Viewing",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      )
+                  ),
+                ),
+              ],
             ),
           ),
-          TextButton(onPressed: _toggleMoreInfo,
-          child: Text(_tapped ? 'Show Less' : 'Show More')),
+          Center(
+            child: TextButton(
+                onPressed: _toggleMoreInfo,
+                child: Text(_tapped ? 'Show Less' : 'Show More')
+            ),
+          ),
         ],
       )
     );
