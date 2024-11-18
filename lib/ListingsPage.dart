@@ -23,8 +23,9 @@ class ListingsPageState extends State<ListingsPage> {
       numBaths: "2.5",
       squareFeet: "1,500",
       imageURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwNUhxbHpwCgZLNYYRF4JMfbhKQ-VQVMQRUA&s',
-      price: 100000.01,
+      price: 600000.00,
       moreInfo: 'Small house',
+      showMore: true,
     ),
     Listing(
       address: '2000 Simcoe Street, Oshawa Ontario',
@@ -32,8 +33,9 @@ class ListingsPageState extends State<ListingsPage> {
       numBaths: "4",
       squareFeet: "3,000",
       imageURL: 'https://i.ytimg.com/vi/_L6jEtMK8No/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD3Jf8E6GHx6CjfSmFk80hileTi_A',
-      price: 199999.99,
+      price: 725000.00,
       moreInfo: 'Bigger house',
+      showMore: true,
     ),
   ];
 
