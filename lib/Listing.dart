@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'PlaceBid.dart';
 
 // ignore_for_file: file_names
@@ -9,7 +10,9 @@ class Listing {
   final String squareFeet;
   final String imageURL;
   final double price;
+  double? highestBid;
   final String moreInfo;
+  bool showMore;
 
   Listing({
     required this.address,
@@ -19,6 +22,7 @@ class Listing {
     required this.imageURL,
     required this.price,
     required this.moreInfo,
+    required this.showMore,
   });
 }
 
@@ -41,17 +45,22 @@ class ListingWidgetState extends State<ListingWidget>{
   }
 
   void _placeBid() {
+    widget.listing.showMore = false;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PlaceBid(listing: widget),
+        builder: (context) => PlaceBid(listing: widget.listing),
       ),
     );
-    print("Placing Bid");
   }
 
   void _scheduleViewing() {
     print("Scheduling Viewing");
+  }
+
+  String numToCurrency(double num) {
+    final formatter = NumberFormat.currency(locale: 'en_US', decimalDigits: 2, symbol: '\$');
+    return formatter.format(num);
   }
 
   @override
@@ -79,9 +88,9 @@ class ListingWidgetState extends State<ListingWidget>{
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '\$${widget.listing.price.toStringAsFixed(2)}',
+              numToCurrency(widget.listing.price),
               style: const TextStyle(fontSize: 18, color: Colors.green),
-            ) 
+            )
           ),
           if(_tapped)
           Center(
@@ -112,6 +121,7 @@ class ListingWidgetState extends State<ListingWidget>{
               ],
             ),
           ),
+          if (widget.listing.showMore)
           Center(
             child: TextButton(
                 onPressed: _toggleMoreInfo,
