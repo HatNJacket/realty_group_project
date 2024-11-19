@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1013785014771",
+    "project_id": "realty-group-project",
+    "storage_bucket": "realty-group-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013785014771:android:a3c1c78362f3d43b08a286",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJMKiXWue04t5keEXNDN_1OdHhk4apdFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
