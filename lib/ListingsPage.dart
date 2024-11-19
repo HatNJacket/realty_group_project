@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'AppDrawer.dart';
 import 'Listing.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-// ignore_for_file: file_names
 class ListingsPage extends StatefulWidget {
   const ListingsPage({super.key});
 
@@ -11,93 +11,86 @@ class ListingsPage extends StatefulWidget {
 }
 
 class ListingsPageState extends State<ListingsPage> {
-
-  // ignore: non_constant_identifier_names
   final TextEditingController _SearchController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<Listing> listings = [];
 
-  //TODO: Replace temporary listings list with SQL or web database
-  final List<Listing> listings = [
-    Listing(
-      address: '1234 Main Street, Oshawa Ontario',
-      numBeds: "2",
-      numBaths: "2.5",
-      squareFeet: "1,500",
-      imageURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwNUhxbHpwCgZLNYYRF4JMfbhKQ-VQVMQRUA&s',
-      price: 600000.00,
-      moreInfo: 'Small house',
-      showMore: true,
-    ),
-    Listing(
-      address: '2000 Simcoe Street, Oshawa Ontario',
-      numBeds: "3",
-      numBaths: "4",
-      squareFeet: "3,000",
-      imageURL: 'https://i.ytimg.com/vi/_L6jEtMK8No/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD3Jf8E6GHx6CjfSmFk80hileTi_A',
-      price: 725000.00,
-      moreInfo: 'Bigger house',
-      showMore: true,
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _fetchListings();
+  }
+
+  Future<void> _fetchListings() async {
+    try {
+      final QuerySnapshot querySnapshot =
+          await _firestore.collection('listings').get();
+      setState(() {
+        listings = querySnapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return Listing(
+            address: data['address'],
+            numBeds: data['numBeds'].toString(),
+            numBaths: data['numBaths'].toString(),
+            squareFeet: data['squareFeet'].toString(),
+            imageURL: data['imageURL'],
+            price: data['price'],
+            moreInfo: data['moreInfo'],
+            showMore: true,
+          );
+        }).toList();
+      });
+    } catch (e) {
+      print('Error fetching listings: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(context),
-      drawer: const AppDrawer(),
-      body: _buildBody(context),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
-        title: const Text("Realty")
-    );
-  }
-
-  Widget _buildBody(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-          child: Row(
-            children: [
-              const SizedBox(width: 55),
-              Expanded(
-                child: TextField(
-                  controller: _SearchController,
-                  onSubmitted: (String value) => print(value),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    labelText: 'Search Address',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
+        title: const Text("Realty"),
+      ),
+      drawer: const AppDrawer(),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Row(
+              children: [
+                const SizedBox(width: 55),
+                Expanded(
+                  child: TextField(
+                    controller: _SearchController,
+                    onSubmitted: (value) {
+                      print("Searching: $value");
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      labelText: 'Search Address',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      fillColor: Colors.grey.shade300,
+                      filled: true,
                     ),
-                    fillColor: Colors.grey.shade300,
-                    filled: true,
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 55,
-                child: IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () => print("Added Listing"),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: listings.length,
-            itemBuilder: (context, index){
-              return ListingWidget(listing: listings[index]);
-            }
-            )
-        ),
-      ],
+          Expanded(
+            child: ListView.builder(
+              itemCount: listings.length,
+              itemBuilder: (context, index) {
+                return ListingWidget(listing: listings[index]);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
