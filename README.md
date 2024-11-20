@@ -1,4 +1,9 @@
 # Realty Group Project
+Group Members
+Jason Pickering - 100439553
+Caleb Gladwin - 100755915
+Nicholas Drapak - 100754042
+Zain Siddiqui - 100867903
 
 A Flutter-based real estate application enabling users to browse property listings, place bids, manage search history, and receive notifications. The project uses Firebase Firestore for cloud storage and SharedPreferences for local storage.
 
