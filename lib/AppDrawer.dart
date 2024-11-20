@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:realty_group_project/AddListingPage.dart';
 import 'package:realty_group_project/TempPage.dart';
-import 'package:realty_group_project/main.dart';
 import 'ListingsPage.dart';
-import 'NotificationPage.dart'; // New screen for notifications
+import 'NotificationPage.dart';
 // import 'TempPage.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -39,13 +37,6 @@ class AppDrawerState extends State<AppDrawer> {
             },
           ),
           ListTile(
-            title: const Text('View Listings'),
-            onTap: () {
-              Navigator.pop(context);
-              _openListingsPage();
-            },
-          ),
-          ListTile(
             title: const Text('Notifications'),
             onTap: () {
               Navigator.pop(context);
@@ -65,15 +56,6 @@ class AppDrawerState extends State<AppDrawer> {
   }
 
   void _openHomePage() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const MyHomePage(title: "Realty",),
-      ),
-    );
-  }
-
-  void _openListingsPage() async {
     Navigator.push(
       context,
       MaterialPageRoute(

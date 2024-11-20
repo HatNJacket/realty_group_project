@@ -1,29 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'PlaceBid.dart';
 
 // ignore_for_file: file_names
 class Listing {
-  final String address;
-  final String numBeds;
-  final String numBaths;
-  final String squareFeet;
-  final String imageURL;
-  final double price;
+  String? address;
+  String? numBeds;
+  String? numBaths;
+  String? squareFeet;
+  String? imageURL;
+  double? price;
   double? highestBid;
-  final String moreInfo;
-  bool showMore;
+  bool? showMore;
+  DocumentReference? reference;
 
   Listing({
     required this.address,
     required this.numBeds,
     required this.numBaths,
     required this.squareFeet,
-    required this.imageURL,
+    this.imageURL,
     required this.price,
-    required this.moreInfo,
-    required this.showMore,
+    required this.highestBid,
+    this.showMore = true,
+    this.reference,
   });
+
+  Listing.fromMap(Map<String, dynamic> map, {this.reference}) {
+    address = map["address"];
+    numBeds = map["numBeds"].toString();
+    numBaths = map["numBaths"].toString();
+    squareFeet = map["squareFeet"].toString();
+    imageURL = map["imageURL"];
+    price = map["price"].toDouble();
+    highestBid = map["highestBid"].toDouble();
+    showMore = map["showMore"];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "address": address,
+      "numBeds": numBeds,
+      "numBaths": numBaths,
+      "squareFeet": squareFeet,
+      "imageURL": imageURL,
+      "price": price,
+      "showMore": showMore,
+    };
+  }
 }
 
 class ListingWidget extends StatefulWidget{
@@ -46,6 +71,8 @@ class ListingWidgetState extends State<ListingWidget>{
 
   void _placeBid() {
     widget.listing.showMore = false;
+    _tapped = !_tapped;
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -70,11 +97,11 @@ class ListingWidgetState extends State<ListingWidget>{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(child: Image.network(widget.listing.imageURL)),
+          Center(child: Image.network(widget.listing.imageURL! != "" ? widget.listing.imageURL! : "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?cs=srgb&dl=pexels-binyaminmellish-186077.jpg&fm=jpg",)),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-                widget.listing.address,
+                widget.listing.address!,
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
             ),
           ),
@@ -88,7 +115,7 @@ class ListingWidgetState extends State<ListingWidget>{
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              numToCurrency(widget.listing.price),
+              numToCurrency(widget.listing.price!),
               style: const TextStyle(fontSize: 18, color: Colors.green),
             )
           ),
@@ -121,7 +148,7 @@ class ListingWidgetState extends State<ListingWidget>{
               ],
             ),
           ),
-          if (widget.listing.showMore)
+          if (widget.listing.showMore!)
           Center(
             child: TextButton(
                 onPressed: _toggleMoreInfo,
