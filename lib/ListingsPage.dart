@@ -14,8 +14,6 @@ class ListingsPage extends StatefulWidget {
 }
 
 class ListingsPageState extends State<ListingsPage> {
-  List<Listing> listings = [];
-  List<Listing> filteredListings = [];
 
   ListingsModel listingsModel = ListingsModel();
 
@@ -97,10 +95,8 @@ class ListingsPageState extends State<ListingsPage> {
                 SizedBox(
                   width: 55,
                   child: IconButton(
-                      onPressed: () => setState(() async {
-                        _openAddListingPage();
-                      }),
-                      icon: const Icon(Icons.add)
+                      onPressed: () => _openAddListingPage(),
+                      icon: const Icon(Icons.add),
                   ),
                 ),
               ],
@@ -113,7 +109,6 @@ class ListingsPageState extends State<ListingsPage> {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
-                    // Apply client-side filtering
                     final filteredDocs = snapshot.data!.docs.where((doc) {
                       final listing = Listing.fromMap(
                         doc.data() as Map<String, dynamic>,
