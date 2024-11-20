@@ -8,7 +8,6 @@ class AddListing extends StatelessWidget {
   final TextEditingController _BedsController = TextEditingController();
   final TextEditingController _BathsController = TextEditingController();
   final TextEditingController _SquareFeetController = TextEditingController();
-  final TextEditingController _AgentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
