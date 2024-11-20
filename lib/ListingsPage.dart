@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'AddListingPage.dart';
+import 'AppDrawer.dart';
+import 'Listing.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'ListingsModel.dart';
 import 'AppDrawer.dart';
 import 'Listing.dart';
 import 'AddListing.dart';
 
-// ignore_for_file: file_names
 class ListingsPage extends StatefulWidget {
   const ListingsPage({super.key});
 
@@ -15,6 +19,10 @@ class ListingsPage extends StatefulWidget {
 }
 
 class ListingsPageState extends State<ListingsPage> {
+  final TextEditingController _SearchController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<Listing> listings = [];
+  List<Listing> filteredListings = [];
 
   ListingsModel listingsModel = ListingsModel();
 
@@ -36,13 +44,112 @@ class ListingsPageState extends State<ListingsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(context),
-      drawer: const AppDrawer(),
-      body: _buildBody(context),
+  void initState() {
+    super.initState();
+    _fetchListings();
+  }
+
+  Future<void> _fetchListings() async {
+    try {
+      final QuerySnapshot querySnapshot =
+          await _firestore.collection('houses').get();
+      setState(() {
+        listings = querySnapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return Listing(
+            address: data['address'],
+            numBeds: data['numBeds'].toString(),
+            numBaths: data['numBaths'].toString(),
+            squareFeet: data['squareFeet'].toString(),
+            imageURL: data['imageURL'],
+            price: data['price'].toDouble(),
+            moreInfo: data['moreInfo'],
+            showMore: true,
+          );
+        }).toList();
+        filteredListings = listings;
+        _showSnackbar("Listings successfully loaded!");
+      });
+    } catch (e) {
+      _showSnackbar("Error fetching listings: $e");
+    }
+  }
+
+  Future<void> _saveSearch(String searchQuery) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> searches = prefs.getStringList('searchHistory') ?? [];
+    searches.add(searchQuery);
+    await prefs.setStringList('searchHistory', searches);
+  }
+
+  void _handleSearch(String searchQuery) {
+    setState(() {
+      filteredListings = listings
+          .where((listing) =>
+              listing.address.toLowerCase().contains(searchQuery.toLowerCase()))
+          .toList();
+    });
+  }
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
     );
   }
+
+
+  void _openAddListingPage() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AddListingPage(),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+        title: const Text("Realty"),
+      ),
+      drawer: const AppDrawer(),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Row(
+              children: [
+                const SizedBox(width: 55),
+                Expanded(
+                  child: TextField(
+                    controller: _SearchController,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        _handleSearch(value);
+                      } else {
+                        setState(() {filteredListings = listings;});
+                      }
+                    },
+                    onSubmitted: (value) {
+                      if (value.isNotEmpty) {
+                        _showSnackbar("Search results updated for: $value");
+                        _saveSearch(value);
+                      }
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      labelText: 'Search Address',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      fillColor: Colors.grey.shade300,
+                      filled: true,
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
@@ -69,11 +176,18 @@ class ListingsPageState extends State<ListingsPage> {
                     labelText: 'Search Address',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
+
                     ),
-                    fillColor: Colors.grey.shade300,
-                    filled: true,
                   ),
                 ),
+                SizedBox(
+                  width: 55,
+                  child: IconButton(
+                      onPressed: () => setState(() async {
+                        _openAddListingPage();
+                      }),
+                      icon: const Icon(Icons.add)
+                  ),
               ),
               SizedBox(
                 width: 55,
@@ -81,9 +195,19 @@ class ListingsPageState extends State<ListingsPage> {
                   icon: const Icon(Icons.add),
                   onPressed: addListing,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredListings.length,
+              itemBuilder: (context, index) {
+                return ListingWidget(listing: filteredListings[index]);
+              },
+            ),
+          ),
+        ],
+      ),
         ),
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
