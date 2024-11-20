@@ -1,15 +1,9 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:realty_group_project/ListingsPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'ListingsPage.dart';
 import 'firebase_options.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
@@ -39,7 +33,7 @@ class MyApp extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-            title: 'Cloud Storage',
+            title: 'Temp Title',
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
               useMaterial3: true,
@@ -47,18 +41,6 @@ class MyApp extends StatelessWidget {
             home: const ListingsPage(),
           );
         }
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return const ListingsPage();
         return const MaterialApp(
           home: Scaffold(
             body: Center(

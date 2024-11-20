@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'Listing.dart';
+import 'ListingsModel.dart';
 
 class AddListingPage extends StatefulWidget {
   const AddListingPage({super.key});
@@ -9,12 +11,14 @@ class AddListingPage extends StatefulWidget {
 }
 
 class AddListingPageState extends State<AddListingPage> {
+  ListingsModel listingsModel = ListingsModel();
+
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _numBedsController = TextEditingController();
   final TextEditingController _numBathsController = TextEditingController();
   final TextEditingController _squareFeetController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TextEditingController _imageController = TextEditingController();
 
   Future<void> _addListing() async {
     if (_addressController.text.isEmpty ||
@@ -29,15 +33,18 @@ class AddListingPageState extends State<AddListingPage> {
     }
 
     try {
-      await _firestore.collection('houses').add({
-        'address': _addressController.text,
-        'numBeds': int.parse(_numBedsController.text),
-        'numBaths': int.parse(_numBathsController.text),
-        'squareFeet': int.parse(_squareFeetController.text),
-        'price': double.parse(_priceController.text),
-        'imageURL': 'https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?cs=srgb&dl=pexels-binyaminmellish-186077.jpg&fm=jpg', // Placeholder for image URL
-        'moreInfo': '', // Placeholder for additional info
-      });
+      listingsModel.addListing(
+          Listing(
+            address: _addressController.text,
+            numBeds: _numBedsController.text,
+            numBaths: _numBathsController.text,
+            squareFeet: _squareFeetController.text,
+            imageURL: _imageController.text,
+            price: double.parse(_priceController.text),
+            highestBid: double.parse(_priceController.text),
+            showMore: true,
+          )
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Listing added successfully!")),
@@ -60,6 +67,7 @@ class AddListingPageState extends State<AddListingPage> {
     _numBathsController.clear();
     _squareFeetController.clear();
     _priceController.clear();
+    _imageController.clear();
   }
 
   @override
@@ -87,6 +95,9 @@ class AddListingPageState extends State<AddListingPage> {
             const SizedBox(height: 16),
             _buildTextField(
                 _priceController, "Price", TextInputType.number),
+            const SizedBox(height: 16),
+            _buildTextField(
+                _imageController, "Image URL", TextInputType.text),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _addListing,
