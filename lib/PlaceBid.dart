@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'Listing.dart';
+import 'ListingsModel.dart';
 
 // ignore_for_file: file_names
 class PlaceBid extends StatefulWidget {
@@ -14,6 +16,8 @@ class PlaceBid extends StatefulWidget {
 }
 
 class PlaceBidState extends State<PlaceBid> {
+
+  ListingsModel listingsModel = ListingsModel();
 
   @override
   void initState() {
@@ -29,14 +33,19 @@ class PlaceBidState extends State<PlaceBid> {
     return formatter.format(num);
   }
 
-  void onPlacedBid() {
+  void onPlacedBid() async {
     double newBid = double.parse(_BidController.text);
 
     if (newBid > widget.listing.price!) {
+      DocumentSnapshot snapshot = await widget.listing.reference!.get();
+      
       setState(() {
-        widget.listing.highestBid = newBid;
+        listingsModel.updateListingBid(snapshot, newBid);
         _BidController.clear();
+        widget.listing.showMore = true;
       });
+
+      Navigator.pop(context);
     }
   }
 

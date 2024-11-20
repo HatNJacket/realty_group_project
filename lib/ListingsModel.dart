@@ -15,8 +15,9 @@ class ListingsModel{
         'numBeds': listing.numBeds,
         'numBaths': listing.numBaths,
         'squareFeet': listing.squareFeet,
-        'imageURL': listing.imageURL,
         'price': listing.price,
+        'highestBid': listing.highestBid,
+        'imageURL': listing.imageURL,
         'showMore': listing.showMore,
       });
       print("Listing added successfully!");
@@ -34,9 +35,9 @@ class ListingsModel{
     }
   }
 
-  Future<void> updateListingPrice(DocumentSnapshot document, double newPrice) async {
+  Future<void> updateListingBid(DocumentSnapshot document, double newBid) async {
     document.reference.update({
-      "price": newPrice
+      "highestBid": newBid
     });
   }
 }

@@ -6,9 +6,9 @@ import 'PlaceBid.dart';
 // ignore_for_file: file_names
 class Listing {
   String? address;
-  double? numBeds;
-  double? numBaths;
-  double? squareFeet;
+  String? numBeds;
+  String? numBaths;
+  String? squareFeet;
   String? imageURL;
   double? price;
   double? highestBid;
@@ -20,31 +20,33 @@ class Listing {
     required this.numBeds,
     required this.numBaths,
     required this.squareFeet,
-    required this.imageURL,
+    this.imageURL,
     required this.price,
-    required this.showMore,
+    required this.highestBid,
+    this.showMore = true,
     this.reference,
   });
 
   Listing.fromMap(Map<String, dynamic> map, {this.reference}) {
     address = map["address"];
-    numBeds = map["numBeds"].toDouble();
-    numBaths = map["numBaths"].toDouble();
-    squareFeet = map["squareFeet"].toDouble();
+    numBeds = map["numBeds"].toString();
+    numBaths = map["numBaths"].toString();
+    squareFeet = map["squareFeet"].toString();
     imageURL = map["imageURL"];
     price = map["price"].toDouble();
+    highestBid = map["highestBid"].toDouble();
     showMore = map["showMore"];
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'address': address,
-      'numBeds': numBeds,
-      'numBaths': numBaths,
-      'squareFeet': squareFeet,
-      'imageURL': imageURL,
-      'price': price,
-      'showMore': showMore,
+      "address": address,
+      "numBeds": numBeds,
+      "numBaths": numBaths,
+      "squareFeet": squareFeet,
+      "imageURL": imageURL,
+      "price": price,
+      "showMore": showMore,
     };
   }
 }
@@ -69,6 +71,8 @@ class ListingWidgetState extends State<ListingWidget>{
 
   void _placeBid() {
     widget.listing.showMore = false;
+    _tapped = !_tapped;
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -93,7 +97,7 @@ class ListingWidgetState extends State<ListingWidget>{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(child: Image.network(widget.listing.imageURL!)),
+          Center(child: Image.network(widget.listing.imageURL! != "" ? widget.listing.imageURL! : "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?cs=srgb&dl=pexels-binyaminmellish-186077.jpg&fm=jpg",)),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
