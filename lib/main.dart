@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'AppDrawer.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'ListingsPage.dart';
 import 'firebase_options.dart';
 
-Future<void> main() async {
-	WidgetsFlutterBinding.ensureInitialized();
-	await Firebase.initializeApp( options: DefaultFirebaseOptions.currentPlatform, ); 
-	runApp(const MyApp()); 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -14,39 +13,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Realty',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
-        useMaterial3: true,
+    return FutureBuilder(
+      future: Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
       ),
-      home: const MyHomePage(title: 'Realty'),
-    );
-  }
-}
+      builder: (context, snapshot) {
+        print(snapshot.error);
+        if (snapshot.hasError) {
+          print('Error initializing Firebase');
+          return const MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: Text('Error initializing Firebase'),
+              ),
+            ),
+          );
+        }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            title: 'Cloud Storage',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
+              useMaterial3: true,
+            ),
+            home: const ListingsPage(),
+          );
+        }
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        foregroundColor: Colors.white,
-        title: Text(widget.title),
-      ),
-      drawer: AppDrawer(),
-      body: const Center(
-        child: Text("Home Page"),
-      ),
+        return const MaterialApp(
+          home: Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

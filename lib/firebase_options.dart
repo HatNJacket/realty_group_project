@@ -61,9 +61,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBJMKiXWue04t5keEXNDN_1OdHhk4apdFs',
-    appId: '1:1013785014771:android:a3c1c78362f3d43b08a286',
+    appId: '1:1013785014771:android:d76748235237eacc08a286',
     messagingSenderId: '1013785014771',
     projectId: 'realty-group-project',
     storageBucket: 'realty-group-project.firebasestorage.app',
   );
+
 }

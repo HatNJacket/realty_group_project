@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'AppDrawer.dart';
 import 'Listing.dart';
 
 // ignore_for_file: file_names
@@ -33,7 +32,7 @@ class PlaceBidState extends State<PlaceBid> {
   void onPlacedBid() {
     double newBid = double.parse(_BidController.text);
 
-    if (newBid > widget.listing.price) {
+    if (newBid > widget.listing.price!) {
       setState(() {
         widget.listing.highestBid = newBid;
         _BidController.clear();
@@ -60,7 +59,6 @@ class PlaceBidState extends State<PlaceBid> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      drawer: const AppDrawer(),
       body: _buildBody(context),
     );
   }
@@ -87,7 +85,7 @@ class PlaceBidState extends State<PlaceBid> {
             Text(
               widget.listing.highestBid != null ?
               numToCurrency(widget.listing.highestBid!) :
-              numToCurrency(widget.listing.price),
+              numToCurrency(widget.listing.price!),
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)
             )
           ],

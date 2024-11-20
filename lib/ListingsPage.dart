@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'ListingsModel.dart';
 import 'AppDrawer.dart';
 import 'Listing.dart';
+import 'AddListing.dart';
 
 // ignore_for_file: file_names
 class ListingsPage extends StatefulWidget {
@@ -12,32 +16,24 @@ class ListingsPage extends StatefulWidget {
 
 class ListingsPageState extends State<ListingsPage> {
 
+  ListingsModel listingsModel = ListingsModel();
+
   // ignore: non_constant_identifier_names
   final TextEditingController _SearchController = TextEditingController();
 
-  //TODO: Replace temporary listings list with SQL or web database
-  final List<Listing> listings = [
-    Listing(
-      address: '1234 Main Street, Oshawa Ontario',
-      numBeds: "2",
-      numBaths: "2.5",
-      squareFeet: "1,500",
-      imageURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwNUhxbHpwCgZLNYYRF4JMfbhKQ-VQVMQRUA&s',
-      price: 600000.00,
-      moreInfo: 'Small house',
-      showMore: true,
-    ),
-    Listing(
-      address: '2000 Simcoe Street, Oshawa Ontario',
-      numBeds: "3",
-      numBaths: "4",
-      squareFeet: "3,000",
-      imageURL: 'https://i.ytimg.com/vi/_L6jEtMK8No/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD3Jf8E6GHx6CjfSmFk80hileTi_A',
-      price: 725000.00,
-      moreInfo: 'Bigger house',
-      showMore: true,
-    ),
-  ];
+  void addListing() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddListing(),
+      ),
+    );
+  }
+
+  String numToCurrency(double num) {
+    final formatter = NumberFormat.currency(locale: 'en_US', decimalDigits: 2, symbol: '\$');
+    return formatter.format(num);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +46,9 @@ class ListingsPageState extends State<ListingsPage> {
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
-        backgroundColor: Colors.red,
-        foregroundColor: Colors.white,
-        title: const Text("Realty")
+      backgroundColor: Colors.red,
+      foregroundColor: Colors.white,
+      title: const Text("Realty"),
     );
   }
 
@@ -67,7 +63,7 @@ class ListingsPageState extends State<ListingsPage> {
               Expanded(
                 child: TextField(
                   controller: _SearchController,
-                  onSubmitted: (String value) => print(value),
+                  onSubmitted: (_) => setState(() {}),
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search),
                     labelText: 'Search Address',
@@ -83,21 +79,39 @@ class ListingsPageState extends State<ListingsPage> {
                 width: 55,
                 child: IconButton(
                   icon: const Icon(Icons.add),
-                  onPressed: () => print("Added Listing"),
+                  onPressed: addListing,
                 ),
               ),
             ],
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: listings.length,
-            itemBuilder: (context, index){
-              return ListingWidget(listing: listings[index]);
-            }
-            )
+          child: StreamBuilder<QuerySnapshot>(
+            stream: listingsModel.getListings(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                List<QueryDocumentSnapshot> filteredDocs = snapshot.data!.docs.where((doc) {
+                  String address = doc['address'].toString().toLowerCase();
+                  return _SearchController.text.isEmpty || address.contains(_SearchController.text.toLowerCase());
+                }).toList();
+
+                return ListView(
+                  padding: const EdgeInsets.all(16.0),
+                  children: filteredDocs.map((DocumentSnapshot document) =>
+                      _buildListing(context, document)).toList() ?? [],
+                );
+              }
+            },
+          ),
         ),
       ],
     );
+  }
+
+  Widget _buildListing(BuildContext context, DocumentSnapshot listingData) {
+    final listing = Listing.fromMap(listingData.data() as Map<String, dynamic>, reference: listingData.reference);
+    return ListingWidget(listing: listing);
   }
 }
