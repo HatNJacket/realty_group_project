@@ -1,9 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'AppDrawer.dart';
+import 'package:realty_group_project/ListingsPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 Future<void> main() async {
@@ -40,48 +39,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        foregroundColor: Colors.white,
-        title: Text(widget.title),
-      ),
-      drawer: const AppDrawer(),
-      body: StreamBuilder(
-        stream: _firestore.collection('houses').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No listings available.'));
-          }
-
-          // Extract the list of documents from Firestore
-          final documents = snapshot.data!.docs;
-
-          // Display the documents in a ListView
-          return ListView.builder(
-            itemCount: documents.length,
-            itemBuilder: (context, index) {
-              final data = documents[index].data() as Map<String, dynamic>;
-              return Card(
-                margin: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text(data['address'] ?? 'No Address'),
-                  subtitle: Text(
-                      '${data['numBeds'] ?? '0'} beds, ${data['numBaths'] ?? '0'} baths'),
-                  trailing: Text('\$${data['price']?.toString() ?? '0'}'),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
+    return const ListingsPage();
   }
 }
