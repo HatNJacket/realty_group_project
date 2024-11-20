@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'PlaceBid.dart';
+import 'package:provider/provider.dart';
+import 'StarredListings.dart';
 
 // ignore_for_file: file_names
 class Listing {
@@ -13,6 +15,7 @@ class Listing {
   double? price;
   double? highestBid;
   bool? showMore;
+  bool? isTracked;
   DocumentReference? reference;
 
   Listing({
@@ -24,6 +27,7 @@ class Listing {
     required this.price,
     required this.highestBid,
     this.showMore = true,
+    this.isTracked = false,
     this.reference,
   });
 
@@ -36,6 +40,7 @@ class Listing {
     price = map["price"].toDouble();
     highestBid = map["highestBid"].toDouble();
     showMore = map["showMore"];
+    isTracked = false;
   }
 
   Map<String, dynamic> toMap() {
@@ -92,6 +97,8 @@ class ListingWidgetState extends State<ListingWidget>{
 
   @override
   Widget build(BuildContext context){
+    final starredListings = Provider.of<StarredListings>(context);
+
     return Card(
       margin: const EdgeInsets.all(10.0),
       child: Column(
@@ -149,12 +156,30 @@ class ListingWidgetState extends State<ListingWidget>{
             ),
           ),
           if (widget.listing.showMore!)
-          Center(
-            child: TextButton(
-                onPressed: _toggleMoreInfo,
-                child: Text(_tapped ? 'Show Less' : 'Show More')
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const SizedBox(width: 50),
+                TextButton(
+                    onPressed: _toggleMoreInfo,
+                    child: Text(_tapped ? 'Show Less' : 'Show More')
+                ),
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        widget.listing.isTracked = !widget.listing.isTracked!;
+                        starredListings.toggleStar(widget.listing);
+
+                        print("Starred Listings: ${starredListings.starredListings}");
+                      });
+                    },
+                    icon: Icon(
+                      widget.listing.isTracked! ? Icons.star : Icons.star_border,
+                      color: widget.listing.isTracked! ? Colors.yellow.shade700 : Colors.grey,
+                    )
+                ),
+              ],
             ),
-          ),
         ],
       )
     );
