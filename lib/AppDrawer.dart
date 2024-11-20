@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:realty_group_project/main.dart';
 import 'ListingsPage.dart';
 
 // ignore_for_file: file_names
@@ -58,7 +57,7 @@ class AppDrawerState extends State<AppDrawer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const MyHomePage(title: "Realty",),
+        builder: (context) => const ListingsPage(),
       ),
     );
   }
