@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'AddListingPage.dart';
 import 'AppDrawer.dart';
 import 'Listing.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,7 +37,7 @@ class ListingsPageState extends State<ListingsPage> {
             numBaths: data['numBaths'].toString(),
             squareFeet: data['squareFeet'].toString(),
             imageURL: data['imageURL'],
-            price: data['price'],
+            price: data['price'].toDouble(),
             moreInfo: data['moreInfo'],
             showMore: true,
           );
@@ -57,14 +58,12 @@ class ListingsPageState extends State<ListingsPage> {
   }
 
   void _handleSearch(String searchQuery) {
-    _saveSearch(searchQuery);
     setState(() {
       filteredListings = listings
           .where((listing) =>
               listing.address.toLowerCase().contains(searchQuery.toLowerCase()))
           .toList();
     });
-    _showSnackbar("Search results updated for: $searchQuery");
   }
 
   void _showSnackbar(String message) {
@@ -72,6 +71,15 @@ class ListingsPageState extends State<ListingsPage> {
       SnackBar(
         content: Text(message),
         duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _openAddListingPage() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AddListingPage(),
       ),
     );
   }
@@ -95,11 +103,17 @@ class ListingsPageState extends State<ListingsPage> {
                 Expanded(
                   child: TextField(
                     controller: _SearchController,
-                    onSubmitted: (value) {
+                    onChanged: (value) {
                       if (value.isNotEmpty) {
                         _handleSearch(value);
                       } else {
                         setState(() {filteredListings = listings;});
+                      }
+                    },
+                    onSubmitted: (value) {
+                      if (value.isNotEmpty) {
+                        _showSnackbar("Search results updated for: $value");
+                        _saveSearch(value);
                       }
                     },
                     decoration: InputDecoration(
@@ -111,6 +125,15 @@ class ListingsPageState extends State<ListingsPage> {
                       fillColor: Colors.grey.shade300,
                       filled: true,
                     ),
+                  ),
+                ),
+                SizedBox(
+                  width: 55,
+                  child: IconButton(
+                      onPressed: () => setState(() async {
+                        _openAddListingPage();
+                      }),
+                      icon: const Icon(Icons.add)
                   ),
                 ),
               ],

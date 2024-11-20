@@ -59,13 +59,6 @@ class AppDrawerState extends State<AppDrawer> {
               _openTempPage();
             },
           ),
-          ListTile(
-            title: const Text('Add Listing'),
-            onTap: () {
-              Navigator.pop(context);
-              _openAddListingPage();
-            },
-          )
         ],
       ),
     );
@@ -103,15 +96,6 @@ class AppDrawerState extends State<AppDrawer> {
       context,
       MaterialPageRoute(
         builder: (context) => TempPage(),
-      ),
-    );
-  }
-
-  void _openAddListingPage() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AddListingPage(),
       ),
     );
   }
