@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
             home: const ListingsPage(),
           );
         }
-
         return const MaterialApp(
           home: Scaffold(
             body: Center(

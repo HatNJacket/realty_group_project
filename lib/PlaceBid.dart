@@ -38,7 +38,7 @@ class PlaceBidState extends State<PlaceBid> {
 
     if (newBid > widget.listing.price!) {
       DocumentSnapshot snapshot = await widget.listing.reference!.get();
-
+      
       setState(() {
         listingsModel.updateListingBid(snapshot, newBid);
         _BidController.clear();
