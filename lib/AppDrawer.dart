@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:realty_group_project/AddListingPage.dart';
 import 'package:realty_group_project/TempPage.dart';
-import 'package:realty_group_project/main.dart';
+import 'package:realty_group_project/main.dart'
 import 'ListingsPage.dart';
 import 'NotificationPage.dart'; // New screen for notifications
 // import 'TempPage.dart';
@@ -68,7 +68,7 @@ class AppDrawerState extends State<AppDrawer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const MyHomePage(title: "Realty",),
+        builder: (context) => const ListingsPage(),
       ),
     );
   }
