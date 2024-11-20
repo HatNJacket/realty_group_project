@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'AppDrawer.dart';
 import 'Listing.dart';
 
 // ignore_for_file: file_names
@@ -60,7 +59,6 @@ class PlaceBidState extends State<PlaceBid> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      drawer: const AppDrawer(),
       body: _buildBody(context),
     );
   }

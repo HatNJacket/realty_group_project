@@ -66,4 +66,5 @@ class DefaultFirebaseOptions {
     projectId: 'realty-group-project',
     storageBucket: 'realty-group-project.firebasestorage.app',
   );
+
 }

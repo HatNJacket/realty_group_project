@@ -35,7 +35,7 @@ class AddListingPageState extends State<AddListingPage> {
         'numBaths': int.parse(_numBathsController.text),
         'squareFeet': int.parse(_squareFeetController.text),
         'price': double.parse(_priceController.text),
-        'imageURL': '', // Placeholder for image URL
+        'imageURL': 'https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?cs=srgb&dl=pexels-binyaminmellish-186077.jpg&fm=jpg', // Placeholder for image URL
         'moreInfo': '', // Placeholder for additional info
       });
 
@@ -44,6 +44,9 @@ class AddListingPageState extends State<AddListingPage> {
       );
 
       _clearFields();
+
+      Navigator.pop(context);
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to add listing: $e")),
