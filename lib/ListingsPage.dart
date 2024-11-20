@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'AppDrawer.dart';
 import 'Listing.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListingsPage extends StatefulWidget {
   const ListingsPage({super.key});
@@ -14,6 +15,7 @@ class ListingsPageState extends State<ListingsPage> {
   final TextEditingController _SearchController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Listing> listings = [];
+  List<Listing> filteredListings = [];
 
   @override
   void initState() {
@@ -24,7 +26,7 @@ class ListingsPageState extends State<ListingsPage> {
   Future<void> _fetchListings() async {
     try {
       final QuerySnapshot querySnapshot =
-          await _firestore.collection('listings').get();
+          await _firestore.collection('houses').get();
       setState(() {
         listings = querySnapshot.docs.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
@@ -39,10 +41,39 @@ class ListingsPageState extends State<ListingsPage> {
             showMore: true,
           );
         }).toList();
+        filteredListings = listings;
+        _showSnackbar("Listings successfully loaded!");
       });
     } catch (e) {
-      print('Error fetching listings: $e');
+      _showSnackbar("Error fetching listings: $e");
     }
+  }
+
+  Future<void> _saveSearch(String searchQuery) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> searches = prefs.getStringList('searchHistory') ?? [];
+    searches.add(searchQuery);
+    await prefs.setStringList('searchHistory', searches);
+  }
+
+  void _handleSearch(String searchQuery) {
+    _saveSearch(searchQuery);
+    setState(() {
+      filteredListings = listings
+          .where((listing) =>
+              listing.address.toLowerCase().contains(searchQuery.toLowerCase()))
+          .toList();
+    });
+    _showSnackbar("Search results updated for: $searchQuery");
+  }
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -65,7 +96,11 @@ class ListingsPageState extends State<ListingsPage> {
                   child: TextField(
                     controller: _SearchController,
                     onSubmitted: (value) {
-                      print("Searching: $value");
+                      if (value.isNotEmpty) {
+                        _handleSearch(value);
+                      } else {
+                        setState(() {filteredListings = listings;});
+                      }
                     },
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
@@ -83,9 +118,9 @@ class ListingsPageState extends State<ListingsPage> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: listings.length,
+              itemCount: filteredListings.length,
               itemBuilder: (context, index) {
-                return ListingWidget(listing: listings[index]);
+                return ListingWidget(listing: filteredListings[index]);
               },
             ),
           ),
