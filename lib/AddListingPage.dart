@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Listing.dart';
 import 'ListingsModel.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+
 
 class AddListingPage extends StatefulWidget {
   const AddListingPage({super.key});
@@ -19,6 +22,9 @@ class AddListingPageState extends State<AddListingPage> {
   final TextEditingController _squareFeetController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
+  final MapController _mapController = MapController();
+
+  final LatLng _pinLocation = LatLng(43.944847, -78.891703); 
 
   Future<void> _addListing() async {
     if (_addressController.text.isEmpty ||
@@ -107,6 +113,39 @@ class AddListingPageState extends State<AddListingPage> {
               ),
               child: const Text("Add Listing"),
             ),
+            const SizedBox(height: 20),
+            SizedBox(
+                height: 300,
+                child: FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialZoom: 15,
+                    initialCenter: _pinLocation,
+                  ),
+                  children: [
+                    // This is an api call to the openstreetmap tile layer server
+                    TileLayer(
+                      urlTemplate:
+                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName: "com.example.realty_group_project",
+                    ),
+                    MarkerLayer(
+                      markers: [
+                        Marker(
+                          width: 80.0,
+                          height: 80.0,
+                          point: _pinLocation,
+                          child: const Icon(
+                            Icons.location_on,
+                            color: Colors.red,
+                            size: 40,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
