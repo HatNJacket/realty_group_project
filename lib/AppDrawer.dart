@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:realty_group_project/TempPage.dart';
+import 'package:realty_group_project/NotificationHandler.dart';
+import 'package:realty_group_project/SearchHistory.dart';
 import 'ListingsPage.dart';
-import 'NotificationPage.dart';
-// import 'TempPage.dart';
+import 'FavouriteListings.dart';
 
 class AppDrawer extends StatefulWidget {
-  const AppDrawer({super.key});
+  NotificationHandler notificationHandler;
+
+  AppDrawer({super.key, required this.notificationHandler});
 
   @override
   AppDrawerState createState() => AppDrawerState();
@@ -37,7 +39,7 @@ class AppDrawerState extends State<AppDrawer> {
             },
           ),
           ListTile(
-            title: const Text('Notifications'),
+            title: const Text('Favourite Listings'),
             onTap: () {
               Navigator.pop(context);
               _openNotificationPage();
@@ -68,7 +70,7 @@ class AppDrawerState extends State<AppDrawer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const NotificationPage(),
+        builder: (context) => FavouriteListings(notificationHandler: widget.notificationHandler,),
       ),
     );
   }
@@ -77,7 +79,7 @@ class AppDrawerState extends State<AppDrawer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TempPage(),
+        builder: (context) => const SearchHistory(),
       ),
     );
   }

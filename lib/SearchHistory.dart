@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TempPage extends StatefulWidget {
+class SearchHistory extends StatefulWidget {
+  const SearchHistory({super.key});
+
   @override
-  _TempPageState createState() => _TempPageState();
+  _SearchHistoryState createState() => _SearchHistoryState();
 }
 
-class _TempPageState extends State<TempPage> {
+class _SearchHistoryState extends State<SearchHistory> {
   List<String> searches = [];
 
   @override

@@ -99,6 +99,14 @@ class ListingWidgetState extends State<ListingWidget>{
   Widget build(BuildContext context){
     final starredListings = Provider.of<StarredListings>(context);
 
+    List<dynamic> starredAddresses = starredListings.starredListings.map((listing) {
+      return listing.address;
+    }).toList();
+
+    if (starredAddresses.contains(widget.listing.address)) {
+      widget.listing.isTracked = true;
+    }
+
     return Card(
       margin: const EdgeInsets.all(10.0),
       child: Column(
@@ -169,8 +177,6 @@ class ListingWidgetState extends State<ListingWidget>{
                       setState(() {
                         widget.listing.isTracked = !widget.listing.isTracked!;
                         starredListings.toggleStar(widget.listing);
-
-                        print("Starred Listings: ${starredListings.starredListings}");
                       });
                     },
                     icon: Icon(

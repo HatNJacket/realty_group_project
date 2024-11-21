@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Listing.dart';
 import 'ListingsModel.dart';
 
 class AddListingPage extends StatefulWidget {
+
   const AddListingPage({super.key});
 
   @override
