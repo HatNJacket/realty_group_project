@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Listing.dart';
 
-class StarredListings with ChangeNotifier {
+class StarredListings extends ChangeNotifier {
   final List<Listing> _starredListings = [];
 
   List<Listing> get starredListings => _starredListings;
