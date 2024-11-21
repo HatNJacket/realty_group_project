@@ -5,6 +5,7 @@ import 'Listing.dart';
 import 'ListingsModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'NotificationHandler.dart';
 
 class ListingsPage extends StatefulWidget {
   const ListingsPage({super.key});
@@ -14,6 +15,14 @@ class ListingsPage extends StatefulWidget {
 }
 
 class ListingsPageState extends State<ListingsPage> {
+
+  NotificationHandler notificationHandler = NotificationHandler();
+
+  @override
+  void initState() {
+    super.initState();
+    notificationHandler.initializeNotifications();
+  }
 
   ListingsModel listingsModel = ListingsModel();
 
@@ -58,7 +67,7 @@ class ListingsPageState extends State<ListingsPage> {
         foregroundColor: Colors.white,
         title: const Text("Realty"),
       ),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(notificationHandler: notificationHandler),
       body: Column(
         children: [
           Padding(
