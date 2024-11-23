@@ -33,10 +33,23 @@ class PlaceBidState extends State<PlaceBid> {
     return formatter.format(num);
   }
 
+    void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   void onPlacedBid() async {
+    if (_BidController.text.isEmpty){
+      _showSnackbar("Please enter a valid bid amount.");
+      return;
+    }
     double newBid = double.parse(_BidController.text);
 
-    if (newBid > widget.listing.price!) {
+    if (newBid > widget.listing.highestBid!) {
       DocumentSnapshot snapshot = await widget.listing.reference!.get();
       
       setState(() {
@@ -52,6 +65,7 @@ class PlaceBidState extends State<PlaceBid> {
   String? get errorMessage {
 
     if (_BidController.text.isNotEmpty) {
+      print(_BidController);
       double newBid = double.parse(_BidController.text);
 
       if (newBid > widget.listing.highestBid!) {
