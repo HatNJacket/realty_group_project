@@ -51,6 +51,7 @@ class PlaceBidState extends State<PlaceBid> {
 
     if (newBid > widget.listing.highestBid!) {
       DocumentSnapshot snapshot = await widget.listing.reference!.get();
+      _showSnackbar("Bid of \$${_BidController.text} successfully created.");
       
       setState(() {
         listingsModel.updateListingBid(snapshot, newBid);
