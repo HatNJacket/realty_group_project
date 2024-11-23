@@ -27,6 +27,21 @@ class ListingsPageState extends State<ListingsPage> {
   ListingsModel listingsModel = ListingsModel();
 
   String _searchQuery = '';
+  String _searchHistoryQuery = '';
+
+  @override
+  void didChangeDependencies() {
+    print("void ran");
+    super.didChangeDependencies();
+    final String? searchQuery = ModalRoute.of(context)!.settings.arguments as String?;
+    if(searchQuery != null){
+      setState((){
+        _searchQuery = searchQuery;
+        _searchHistoryQuery = searchQuery;
+        _handleSearch(searchQuery);
+      });
+    }
+  }
 
   Future<void> _saveSearch(String searchQuery) async {
     final prefs = await SharedPreferences.getInstance();
@@ -92,7 +107,7 @@ class ListingsPageState extends State<ListingsPage> {
                     },
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
-                      labelText: 'Search Address',
+                      labelText: (_searchQuery == '' ? 'Search Address' : _searchHistoryQuery),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
