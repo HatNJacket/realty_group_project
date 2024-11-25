@@ -122,17 +122,19 @@ class ListingWidgetState extends State<ListingWidget>{
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              "${widget.listing.numBeds} beds, ${widget.listing.numBaths} baths, ${widget.listing.squareFeet} sqft, ",
-              style: const TextStyle(fontSize: 16),
+            child: Row(
+              children: [
+                Text(
+                  numToCurrency(widget.listing.price!),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width: 20.0),
+                Text(
+                  "${widget.listing.numBeds} beds, ${widget.listing.numBaths} baths, ${widget.listing.squareFeet} sqft, ",
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                ),
+              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              numToCurrency(widget.listing.price!),
-              style: const TextStyle(fontSize: 18, color: Colors.green),
-            )
           ),
           if(_tapped)
           Center(
