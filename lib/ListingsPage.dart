@@ -108,7 +108,7 @@ class ListingsPageState extends State<ListingsPage> {
                         _saveSearch(value);
                         _handleSearch(value);
                       }
-                      if(value.isEmpty || value.trim() == ''){
+                      if(value.trim().isEmpty){
                         _decorationLabelText = 'Search Address';
                         _showSnackbar("Search Bar Cleared.");
                         _handleSearch('');
