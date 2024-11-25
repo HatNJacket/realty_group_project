@@ -101,10 +101,13 @@ class ListingsPageState extends State<ListingsPage> {
                           _showSnackbar("Search results updated for: $value");
                           _saveSearch(value);
                         }
+
                         if(value.trim().isEmpty){
                           _decorationLabelText = 'Search Address';
                           _showSnackbar("Search Bar Cleared.");
                         }
+
+                        _handleSearch(value);
                       });
                     },
                     decoration: InputDecoration(
