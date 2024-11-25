@@ -24,7 +24,7 @@ class AddListingPageState extends State<AddListingPage> {
   final TextEditingController _imageController = TextEditingController();
   final MapController _mapController = MapController();
 
-  final LatLng _pinLocation = LatLng(43.944847, -78.891703); 
+  final LatLng _pinLocation = const LatLng(43.944847, -78.891703);
 
   Future<void> _addListing() async {
     if (_addressController.text.isEmpty ||
