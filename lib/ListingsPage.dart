@@ -31,7 +31,6 @@ class ListingsPageState extends State<ListingsPage> {
 
   @override
   void didChangeDependencies() {
-    print("void ran");
     super.didChangeDependencies();
     final String? searchQuery = ModalRoute.of(context)!.settings.arguments as String?;
     if(searchQuery != null){
@@ -92,32 +91,25 @@ class ListingsPageState extends State<ListingsPage> {
                 const SizedBox(width: 55),
                 Expanded(
                   child: TextField(
-                    // Removed on account of the onSubmitted() being useless otherwise.
-                    // To re-add, just uncomment below and comment out _handleSearch in onSubmitted below.
-                    // onChanged: (value) {
-                    //   if (value.isNotEmpty) {
-                    //     _handleSearch(value);
-                    //   } else {
-                    //     setState(() {});
-                    //   }
-                    // },
+                    onChanged: (value) {
+                      _handleSearch(value);
+                    },
                     onSubmitted: (value) {
-                      if (value.isNotEmpty) {
-                        _decorationLabelText = value;
-                        _showSnackbar("Search results updated for: $value");
-                        _saveSearch(value);
-                        _handleSearch(value);
-                      }
-                      if(value.trim().isEmpty){
-                        _decorationLabelText = 'Search Address';
-                        _showSnackbar("Search Bar Cleared.");
-                        _handleSearch('');
-                      }
+                      setState(() {
+                        if (value.isNotEmpty) {
+                          _decorationLabelText = value;
+                          _showSnackbar("Search results updated for: $value");
+                          _saveSearch(value);
+                        }
+                        if(value.trim().isEmpty){
+                          _decorationLabelText = 'Search Address';
+                          _showSnackbar("Search Bar Cleared.");
+                        }
+                      });
                     },
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
                       labelText: _decorationLabelText,
-                      // labelText: 'Search Address',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
