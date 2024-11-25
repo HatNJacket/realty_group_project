@@ -40,6 +40,13 @@ class _SearchHistoryState extends State<SearchHistory> {
                 return ListTile(
                   leading: const Icon(Icons.history),
                   title: Text(searches[index]),
+                  onTap: (){
+                    Navigator.pushNamed(
+                      context,
+                      '/listings',
+                      arguments: searches[index],
+                    );
+                  },
                 );
               },
             ),
