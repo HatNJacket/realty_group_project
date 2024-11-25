@@ -27,7 +27,7 @@ class ListingsPageState extends State<ListingsPage> {
   ListingsModel listingsModel = ListingsModel();
 
   String _searchQuery = '';
-  String _searchHistoryQuery = '';
+  String _decorationLabelText = 'Search Address';
 
   @override
   void didChangeDependencies() {
@@ -37,7 +37,7 @@ class ListingsPageState extends State<ListingsPage> {
     if(searchQuery != null){
       setState((){
         _searchQuery = searchQuery;
-        _searchHistoryQuery = searchQuery;
+        _decorationLabelText = searchQuery;
         _handleSearch(searchQuery);
       });
     }
@@ -92,22 +92,32 @@ class ListingsPageState extends State<ListingsPage> {
                 const SizedBox(width: 55),
                 Expanded(
                   child: TextField(
-                    onChanged: (value) {
-                      if (value.isNotEmpty) {
-                        _handleSearch(value);
-                      } else {
-                        setState(() {});
-                      }
-                    },
+                    // Removed on account of the onSubmitted() being useless otherwise.
+                    // To re-add, just uncomment below and comment out _handleSearch in onSubmitted below.
+                    // onChanged: (value) {
+                    //   if (value.isNotEmpty) {
+                    //     _handleSearch(value);
+                    //   } else {
+                    //     setState(() {});
+                    //   }
+                    // },
                     onSubmitted: (value) {
                       if (value.isNotEmpty) {
+                        _decorationLabelText = value;
                         _showSnackbar("Search results updated for: $value");
                         _saveSearch(value);
+                        _handleSearch(value);
+                      }
+                      if(value.trim().isEmpty){
+                        _decorationLabelText = 'Search Address';
+                        _showSnackbar("Search Bar Cleared.");
+                        _handleSearch('');
                       }
                     },
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
-                      labelText: (_searchQuery == '' ? 'Search Address' : _searchHistoryQuery),
+                      labelText: _decorationLabelText,
+                      // labelText: 'Search Address',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
