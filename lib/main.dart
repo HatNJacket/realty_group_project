@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
         options: DefaultFirebaseOptions.currentPlatform,
       ),
       builder: (context, snapshot) {
-        print(snapshot.error);
         if (snapshot.hasError) {
           print('Error initializing Firebase');
           return const MaterialApp(

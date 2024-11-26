@@ -128,9 +128,9 @@ class ListingWidgetState extends State<ListingWidget>{
                   numToCurrency(widget.listing.price!),
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(width: 20.0),
+                const SizedBox(width: 20.0),
                 Text(
-                  "${widget.listing.numBeds} beds, ${widget.listing.numBaths} baths, ${widget.listing.squareFeet} sqft, ",
+                  "${widget.listing.numBeds} beds, ${widget.listing.numBaths} baths, ${widget.listing.squareFeet} sqft",
                   style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
               ],
