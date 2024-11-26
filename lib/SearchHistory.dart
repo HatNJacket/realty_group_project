@@ -24,6 +24,14 @@ class _SearchHistoryState extends State<SearchHistory> {
     });
   }
 
+  Future<void> _clearSearchHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      searches = [];
+    });
+    await prefs.setStringList('searchHistory', searches);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +39,12 @@ class _SearchHistoryState extends State<SearchHistory> {
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
         title: const Text("Previous Searches"),
+        actions: [
+          IconButton(
+              onPressed: _clearSearchHistory,
+              icon: const Icon(Icons.delete)
+          )
+        ],
       ),
       body: searches.isEmpty
           ? const Center(child: Text("No searches yet."))
