@@ -91,7 +91,8 @@ class ListingWidgetState extends State<ListingWidget>{
   }
 
   String numToCurrency(double num) {
-    final formatter = NumberFormat.currency(locale: 'en_US', decimalDigits: 2, symbol: '\$');
+    bool hasDecimals = num % 1 != 0 || num < 1000;
+    final formatter = NumberFormat.currency(locale: 'en_US', decimalDigits: hasDecimals ? 2 : 0, symbol: '\$');
     return formatter.format(num);
   }
 
@@ -115,9 +116,15 @@ class ListingWidgetState extends State<ListingWidget>{
           Center(child: Image.network(widget.listing.imageURL! != "" ? widget.listing.imageURL! : "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?cs=srgb&dl=pexels-binyaminmellish-186077.jpg&fm=jpg",)),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-                widget.listing.address!,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                      widget.listing.address!,
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
