@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:realty_group_project/LoginPage.dart';
-import 'package:realty_group_project/NotificationHandler.dart';
 import 'package:realty_group_project/SearchHistory.dart';
 import 'package:realty_group_project/UserPage.dart';
 import 'ListingsPage.dart';
@@ -9,9 +8,8 @@ import 'FavouriteListings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AppDrawer extends StatefulWidget {
-  NotificationHandler notificationHandler;
 
-  AppDrawer({super.key, required this.notificationHandler});
+  const AppDrawer({super.key});
 
   @override
   AppDrawerState createState() => AppDrawerState();
@@ -120,7 +118,7 @@ class AppDrawerState extends State<AppDrawer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FavouriteListings(notificationHandler: widget.notificationHandler,),
+        builder: (context) => const FavouriteListings(),
       ),
     );
   }
