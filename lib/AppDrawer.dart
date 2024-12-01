@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:realty_group_project/NotificationHandler.dart';
 import 'package:realty_group_project/SearchHistory.dart';
 import 'ListingsPage.dart';
 import 'FavouriteListings.dart';
 
 class AppDrawer extends StatefulWidget {
-  NotificationHandler notificationHandler;
 
-  AppDrawer({super.key, required this.notificationHandler});
+  const AppDrawer({super.key});
 
   @override
   AppDrawerState createState() => AppDrawerState();
@@ -70,7 +68,7 @@ class AppDrawerState extends State<AppDrawer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FavouriteListings(notificationHandler: widget.notificationHandler,),
+        builder: (context) => const FavouriteListings(),
       ),
     );
   }
