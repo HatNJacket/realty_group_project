@@ -7,6 +7,7 @@ import '../utils/Converter.dart';
 
 // ignore_for_file: file_names
 class Listing {
+  String? id;
   String? address;
   String? numBeds;
   String? numBaths;
@@ -32,6 +33,7 @@ class Listing {
   });
 
   Listing.fromMap(Map<String, dynamic> map, {this.reference}) {
+    id = reference?.id != null ? reference!.id : null;
     address = map["address"];
     numBeds = map["numBeds"].toString();
     numBaths = map["numBaths"].toString();
@@ -45,6 +47,7 @@ class Listing {
 
   Map<String, dynamic> toMap() {
     return {
+      "id": id,
       "address": address,
       "numBeds": numBeds,
       "numBaths": numBaths,

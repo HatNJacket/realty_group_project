@@ -43,6 +43,7 @@ class _RegisterDialogState extends State<RegisterDialog> {
             'email': user.email,
             'phoneNumber': '',
             'imageURL': 'https://cdn3.iconfinder.com/data/icons/office-485/100/ICON_BASIC-11-512.png',
+            'favouriteListings': [],
           });
           widget.onSuccess('Registration Successful.');
         }
