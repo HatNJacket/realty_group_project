@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ class LoginPageState extends State<LoginPage>{
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final AuthService _auth = AuthService();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -44,6 +46,20 @@ class LoginPageState extends State<LoginPage>{
       passwordController.text.trim(),
       );
     if(user != null){
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+
+      if (!userDoc.exists) {
+        await _firestore.collection('users').doc(user.uid).set({
+          'uid': user.uid,
+          'username': user.email,
+          'password': passwordController.text.trim(), //user.password is not a valid getter for security reasons, so this workaround is used
+          'email': user.email,
+          'phoneNumber': '',
+          'imageURL': 'https://cdn3.iconfinder.com/data/icons/office-485/100/ICON_BASIC-11-512.png',
+          'favouriteListings': [],
+        });
+      }
+
       Provider.of<UserModel>(context, listen: false).setUser(user);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const ListingsPage()),

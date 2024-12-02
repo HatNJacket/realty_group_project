@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../utils/Converter.dart';
 import 'package:flutter/material.dart';
 import 'AddListingPage.dart';
@@ -31,15 +33,22 @@ class ListingsPageState extends State<ListingsPage> {
   String _searchQuery = '';
   String _decorationLabelText = 'Search Address';
 
-  void _setupAttributeChangeListener() {
+  void _setupAttributeChangeListener() async {
     const String collection = 'houses';
     const String attribute = 'highestBid';
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+    final favouriteListings = List<String>.from(userDoc.data()?['favouriteListings'] ?? []);
 
     FirebaseFirestore.instance.collection(collection).snapshots().listen((snapshot) {
       for (var change in snapshot.docChanges) {
         final data = change.doc.data();
+        final docId = change.doc.id;
 
-        if (change.type == DocumentChangeType.modified) {
+        if (favouriteListings.contains(docId) && change.type == DocumentChangeType.modified) {
           if (data != null && data.containsKey(attribute)) {
             _handleAttributeChange(data);
           }
@@ -181,8 +190,11 @@ class ListingsPageState extends State<ListingsPage> {
     );
   }
 
-  Widget _buildListing(BuildContext context, DocumentSnapshot productData) {
-    final listing = Listing.fromMap(productData.data() as Map<String, dynamic>, reference: productData.reference);
+  Widget _buildListing(BuildContext context, DocumentSnapshot document) {
+    final listing = Listing.fromMap(
+      document.data() as Map<String, dynamic>,
+      reference: document.reference,
+    );
     return ListingWidget(listing: listing);
   }
 }

@@ -4,8 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ListingsModel{
 
   Stream<QuerySnapshot> getListings() {
-    return FirebaseFirestore.instance.collection('houses')
-        .snapshots();
+    return FirebaseFirestore.instance.collection('houses').snapshots();
   }
 
   Future<void> addListing(Listing listing) async {

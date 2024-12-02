@@ -29,7 +29,6 @@ class AppDrawerState extends State<AppDrawer> {
 
   Future<void> _signOut(BuildContext context) async{
     await _auth.signOut();
-    Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('You have been signed out.'),
