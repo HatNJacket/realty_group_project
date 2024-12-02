@@ -79,7 +79,7 @@ class UserPageState extends State<UserPage> {
         foregroundColor: Colors.white,
         title: const Text("Realty"),
       ),
-      drawer: AppDrawer(notificationHandler: notificationHandler),
+      drawer: AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
