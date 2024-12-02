@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'PlaceBid.dart';
+import '../widgets/PlaceBid.dart';
 import 'package:provider/provider.dart';
-import 'StarredListings.dart';
-import 'Converter.dart';
+import '../widgets/StarredListings.dart';
+import '../utils/Converter.dart';
 
 // ignore_for_file: file_names
 class Listing {
@@ -126,7 +126,7 @@ class ListingWidgetState extends State<ListingWidget>{
             child: Row(
               children: [
                 Text(
-                  Converter.numToCurrency(widget.listing.price!),
+                  numToCurrency(widget.listing.highestBid!),
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 20.0),

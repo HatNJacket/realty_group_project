@@ -25,7 +25,7 @@ class FavouriteListings extends StatelessWidget {
           return ListTile(
             leading: const Icon(Icons.star, color: Colors.yellow),
             title: Text(listing.address ?? "No Address"),
-            subtitle: Text("Price: \$${listing.price}"),
+            subtitle: Text("Price: \$${listing.highestBid}"),
           );
         },
       ),

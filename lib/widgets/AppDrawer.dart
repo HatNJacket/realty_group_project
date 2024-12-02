@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:realty_group_project/LoginPage.dart';
-import 'package:realty_group_project/SearchHistory.dart';
-import 'package:realty_group_project/UserPage.dart';
-import 'ListingsPage.dart';
+import 'package:realty_group_project/pages/LoginPage.dart';
+import 'package:realty_group_project/pages/SearchHistory.dart';
+import 'package:realty_group_project/pages/UserPage.dart';
+import '../pages/ListingsPage.dart';
 import 'FavouriteListings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
