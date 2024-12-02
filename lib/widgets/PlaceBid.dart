@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'Listing.dart';
-import 'ListingsModel.dart';
+import '../models/Listing.dart';
+import '../models/ListingsModel.dart';
 
 // ignore_for_file: file_names
 class PlaceBid extends StatefulWidget {

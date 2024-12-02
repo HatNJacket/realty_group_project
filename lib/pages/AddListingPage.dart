@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Listing.dart';
-import 'ListingsModel.dart';
+import '../models/Listing.dart';
+import '../models/ListingsModel.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 

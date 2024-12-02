@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 // import 'package:realty_group_project/UserModel.dart';
-import 'NotificationHandler.dart';
-import 'AppDrawer.dart';
+import '../services/NotificationHandler.dart';
+import '../widgets/AppDrawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'UserData.dart';
+import '../models/UserData.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});

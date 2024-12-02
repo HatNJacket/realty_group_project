@@ -1,12 +1,12 @@
-import 'Converter.dart';
+import '../utils/Converter.dart';
 import 'package:flutter/material.dart';
 import 'AddListingPage.dart';
-import 'AppDrawer.dart';
-import 'Listing.dart';
-import 'ListingsModel.dart';
+import '../widgets/AppDrawer.dart';
+import '../models/Listing.dart';
+import '../models/ListingsModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'NotificationHandler.dart';
+import '../services/NotificationHandler.dart';
 
 class ListingsPage extends StatefulWidget {
   const ListingsPage({super.key});
@@ -51,7 +51,7 @@ class ListingsPageState extends State<ListingsPage> {
   void _handleAttributeChange(Map data) async {
     String address = data["address"];
     double highestBid = double.parse(data["highestBid"].toString());
-    await notificationHandler.notificationNow("$address has a new highest bid: ${Converter.numToCurrency(highestBid)}");
+    await notificationHandler.notificationNow("$address has a new highest bid: ${numToCurrency(highestBid)}");
     setState(() {});
   }
 

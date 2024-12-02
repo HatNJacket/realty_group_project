@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realty_group_project/Authservice.dart';
-import 'package:realty_group_project/ListingsPage.dart';
-import 'NotificationHandler.dart';
-import 'AppDrawer.dart';
+import 'package:realty_group_project/pages/ListingsPage.dart';
+import '../services/NotificationHandler.dart';
+import '../widgets/AppDrawer.dart';
 import 'Register.dart';
-import 'UserModel.dart';
+import '../models/UserModel.dart';
 
 
 class LoginPage extends StatefulWidget {

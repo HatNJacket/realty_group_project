@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Listing.dart';
+import '../models/Listing.dart';
 
 class StarredListings extends ChangeNotifier {
   final List<Listing> _starredListings = [];
