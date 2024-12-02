@@ -104,12 +104,12 @@ class PlaceBidState extends State<PlaceBid> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Current Highest Bid: ', style: TextStyle(fontSize: 17)
+              'Original Asking Price: ', style: TextStyle(fontSize: 17)
             ),
             Text(
-              widget.listing.highestBid != null ?
-              numToCurrency(widget.listing.highestBid!) :
-              numToCurrency(widget.listing.price!),
+              widget.listing.price! > 0  ?
+              numToCurrency(widget.listing.price!) :
+              numToCurrency(0),
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)
             )
           ],

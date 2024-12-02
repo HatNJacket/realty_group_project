@@ -126,7 +126,7 @@ class ListingWidgetState extends State<ListingWidget>{
             child: Row(
               children: [
                 Text(
-                  Converter.numToCurrency(widget.listing.price!),
+                  Converter.numToCurrency(widget.listing.highestBid!),
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 20.0),
