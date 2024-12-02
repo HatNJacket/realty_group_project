@@ -1,0 +1,6 @@
+address,highestBid,imageURL,numBaths,numBeds,price,showMore,squareFeet
+"2000 Simcoe Street, Oshawa, Ontario",200000,"",2,1,200000,true,3000
+"123 Elm Street, Toronto, Ontario",1200000,"",3,4,1200000,true,2000
+"456 Pine Avenue, Ottawa, Ontario",550000,"",1.5,2,550000,true,900
+"789 Maple Drive, Waterloo, Ontario",1750000,"",4,5,1750000,true,3200
+"1010 Birch Lane, London, Ontario",850000,"",2,3,850000,true,1800

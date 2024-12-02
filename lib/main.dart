@@ -5,6 +5,7 @@ import 'package:realty_group_project/models/UserModel.dart';
 import 'pages/ListingsPage.dart';
 import 'widgets/StarredListings.dart';
 import 'services/firebase_options.dart';
+import 'scripts/firebase_clear_and_import.dart';
 
 void main() {
   runApp(
