@@ -46,7 +46,7 @@ class LoginPageState extends State<LoginPage>{
     if(user != null){
       Provider.of<UserModel>(context, listen: false).setUser(user);
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => ListingsPage()),
+        MaterialPageRoute(builder: (context) => const ListingsPage()),
       );
       _showSnackbar("Successfully logged in.");
     }
@@ -60,7 +60,7 @@ class LoginPageState extends State<LoginPage>{
         foregroundColor: Colors.white,
         title: const Text("Realty"),
       ),
-      drawer: AppDrawer(notificationHandler: notificationHandler),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -69,28 +69,28 @@ class LoginPageState extends State<LoginPage>{
           children: [
             TextField(
               controller: emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 _login();
               },
-              child: Text('Login'),
+              child: const Text('Login'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 // Show the register dialog
@@ -103,7 +103,7 @@ class LoginPageState extends State<LoginPage>{
                   },
                 );
               },
-              child: Text('Register'),
+              child: const Text('Register'),
             ),
           ],
         ),

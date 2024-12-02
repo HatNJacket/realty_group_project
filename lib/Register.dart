@@ -1,5 +1,5 @@
 // ignore_for_file: file_names, use_key_in_widget_constructors
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class RegisterDialog extends StatefulWidget {
   final Function(String) onSuccess;
 
-  RegisterDialog({required this.onSuccess});
+  const RegisterDialog({required this.onSuccess});
 
   @override
   _RegisterDialogState createState() => _RegisterDialogState();

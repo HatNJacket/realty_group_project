@@ -1,7 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:realty_group_project/UserModel.dart';
+// import 'package:provider/provider.dart';
+// import 'package:realty_group_project/UserModel.dart';
 import 'NotificationHandler.dart';
 import 'AppDrawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,7 +79,7 @@ class UserPageState extends State<UserPage> {
         foregroundColor: Colors.white,
         title: const Text("Realty"),
       ),
-      drawer: AppDrawer(notificationHandler: notificationHandler),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -95,7 +95,7 @@ class UserPageState extends State<UserPage> {
                 children: [
                   Text(
                     userData?.username ?? '',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 8.0),
                   IconButton(
@@ -105,12 +105,12 @@ class UserPageState extends State<UserPage> {
                         context: context,
                         builder: (context){
                           return AlertDialog(
-                            title: Text(
+                            title: const Text(
                               'Change Username'
                             ),
                             content: TextField(
                               controller: usernameController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: 'New Username'
                               ),
                             ),
@@ -127,13 +127,13 @@ class UserPageState extends State<UserPage> {
                                     _showSnackbar('Username Empty');
                                   }
                                 },
-                                child: Text('Save'),
+                                child: const Text('Save'),
                               ),
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Cancel'),
+                                child: const Text('Cancel'),
                               ),
                             ],
                           );
