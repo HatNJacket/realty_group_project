@@ -60,7 +60,7 @@ class LoginPageState extends State<LoginPage>{
         foregroundColor: Colors.white,
         title: const Text("Realty"),
       ),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
