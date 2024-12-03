@@ -66,7 +66,6 @@ class PlaceBidState extends State<PlaceBid> {
   String? get errorMessage {
 
     if (_BidController.text.isNotEmpty) {
-      print(_BidController);
       double newBid = double.parse(_BidController.text);
 
       if (newBid > widget.listing.highestBid!) {

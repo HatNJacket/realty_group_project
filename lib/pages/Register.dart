@@ -50,7 +50,6 @@ class _RegisterDialogState extends State<RegisterDialog> {
         Navigator.of(context).pop();
     }
     catch (e){
-      print(e);
       if(e is FirebaseAuthException){
         if(e.code == 'invalid-email'){
           emailError = 'Email is invalid';
