@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:realty_group_project/models/Listing.dart';
 import 'StarredListings.dart';
 
@@ -19,7 +18,7 @@ class FavouriteListings extends StatelessWidget {
       ),
       body: user != null 
           ? FutureBuilder<List<Listing>>(
-              future: StarredListings().getListings(), // Call the getListings method
+              future: StarredListings().getListings(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

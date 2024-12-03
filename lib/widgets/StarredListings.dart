@@ -50,20 +50,25 @@ class StarredListings extends ChangeNotifier {
   Future<List<Listing>> getListings() async {
     List<Listing> userStarredListings = [];
     User? user = FirebaseAuth.instance.currentUser;
-    if(user!=null){
-      FirebaseFirestore.instance.collection('users').doc(user.uid).get().then((doc) async{
-        if(doc.exists && doc.data() != null){
-          List<dynamic>favouriteListings = doc.data()!['favouriteListings'];
-          for(String listingId in favouriteListings){
-            DocumentSnapshot listingDoc = await FirebaseFirestore.instance.collection('houses').doc(listingId).get();
-            if(listingDoc.exists){
-              Listing listing = Listing.fromMap(listingDoc.data() as Map<String, dynamic>, reference: listingDoc.reference);
-              userStarredListings.add(listing);
-            }
+    if (user != null) {
+      print("Hello!");
+      DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists && doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        List<dynamic> favouriteListings = data['favouriteListings'];
+        for (String listingId in favouriteListings) {
+          DocumentSnapshot listingDoc = await FirebaseFirestore.instance.collection('houses').doc(listingId).get();
+          if (listingDoc.exists) {
+            Listing listing = Listing.fromMap(listingDoc.data() as Map<String, dynamic>, reference: listingDoc.reference);
+            userStarredListings.add(listing);
+            print(listing.address);
+            print("Address ^");
           }
         }
-      });
+      }
     }
+    print(userStarredListings);
+    print("Printed");
     return userStarredListings;
   }
 }
